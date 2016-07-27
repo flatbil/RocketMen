@@ -33,7 +33,7 @@ public class Import {
     
     private void importer(String tableName) {
         Connection connection = null;
-        Statement statement = null;
+        //Statement statement = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Connecting to DB");
@@ -55,7 +55,7 @@ public class Import {
             
             //ResultSet rs = statement.executeQuery(SQL_Query_Text);
             //rs.close();
-            statement.close();
+            //statement.close();
             connection.close();
         } catch(SQLException se) {
             se.printStackTrace();

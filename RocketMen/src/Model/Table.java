@@ -29,6 +29,7 @@ public class Table {
 		String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + tableName;
 		ResultSet rs = statement.executeQuery(SQL_Query_Text);
 		rs.close();
+		statement.close();
 	}
 	public ResultSet queryTable(String tableName, String colName, int rowNumber){
 		

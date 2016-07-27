@@ -45,10 +45,10 @@ public class Import {
             ResultSet res = meta.getTables(null, null, tableName, 
             	     new String[] {"TABLE"});
             	//If the table name is found then it creates a new table. 
-            	while (res.next()) {
+            	while(res.next()) {
             		  myTable = new Table(tableName, connection);
-            		  updateDB(connection);
-            	  }
+            		  myTable.updateDB(connection, tableName);
+            	  } 
             //statement = connection.createStatement(); 	handled in table if a new one is made.
             //String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + myTable.getTableName();
             //Also in Table
@@ -73,44 +73,44 @@ public class Import {
         System.out.println("Import Complete");
     }
     
-    private void updateDB(Connection theConn) throws SQLException {
-        Statement statement = theConn.createStatement();
-        try {
-            theConn.setAutoCommit(false);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        String SQL_Query_Text = null;
-        try {
-            FileInputStream file = new FileInputStream(new File("WhatALaunchShouldLookLike.xlsx"));
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            Iterator<Row> rowIterator = sheet.iterator();
-            while (rowIterator.hasNext()) {
-                Row row = rowIterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-                while (cellIterator.hasNext()) {
-                    Cell cell = cellIterator.next();
-                    Cell cell2 = cellIterator.next();
-                    switch (cell.getCellType()) {
-                        case Cell.CELL_TYPE_NUMERIC:
-//                            System.out.print(cell.getNumericCellValue() + "\t");
-//                            System.out.print(cell2.getNumericCellValue() + "\t");
-                            SQL_Query_Text = "INSERT INTO launch1 (downrangedist, altitude) " + "VALUES(" + cell.getNumericCellValue() + " ," + cell2.getNumericCellValue() + ");";
-                            statement.addBatch(SQL_Query_Text);
-                            int[] count = statement.executeBatch();
-                            theConn.commit();
-                            break;
-                    }
-                }
-//                System.out.println("");
-            }
-            file.close();
-        } 
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-   }   
+//    private void updateDB(Connection theConn) throws SQLException {
+//        Statement statement = theConn.createStatement();
+//        try {
+//            theConn.setAutoCommit(false);
+//        } catch (SQLException e) {
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
+//        String SQL_Query_Text = null;
+//        try {
+//            FileInputStream file = new FileInputStream(new File("WhatALaunchShouldLookLike.xlsx"));
+//            XSSFWorkbook workbook = new XSSFWorkbook(file);
+//            XSSFSheet sheet = workbook.getSheetAt(0);
+//            Iterator<Row> rowIterator = sheet.iterator();
+//            while (rowIterator.hasNext()) {
+//                Row row = rowIterator.next();
+//                Iterator<Cell> cellIterator = row.cellIterator();
+//                while (cellIterator.hasNext()) {
+//                    Cell cell = cellIterator.next();
+//                    Cell cell2 = cellIterator.next();
+//                    switch (cell.getCellType()) {
+//                        case Cell.CELL_TYPE_NUMERIC:
+////                            System.out.print(cell.getNumericCellValue() + "\t");
+////                            System.out.print(cell2.getNumericCellValue() + "\t");
+//                            SQL_Query_Text = "INSERT INTO launch1 (downrangedist, altitude) " + "VALUES(" + cell.getNumericCellValue() + " ," + cell2.getNumericCellValue() + ");";
+//                            statement.addBatch(SQL_Query_Text);
+//                            int[] count = statement.executeBatch();
+//                            theConn.commit();
+//                            break;
+//                    }
+//                }
+////                System.out.println("");
+//            }
+//            file.close();
+//        } 
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//   }   
     
 }

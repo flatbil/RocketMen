@@ -25,7 +25,8 @@ public class UI {
                 mainMenu();
                 break;    
             case 2:
-                Display d = new Display();
+                //Display d = new Display();
+            	displayMenu();
                 mainMenu();
                 break;
             case 3:
@@ -40,5 +41,10 @@ public class UI {
     	String selection = console2.next();
     	Import theImport = new Import(selection);
     }
-    
+    private void displayMenu(){
+    	Scanner console2 = new Scanner(System.in);
+    	System.out.println("Enter the name of the launch:");
+    	String selection = console2.next();
+    	Display theDisplay = new Display(selection);
+    }
 }

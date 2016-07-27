@@ -35,9 +35,45 @@ public class Table {
 		
 		return null;
 	}
-	public void updateTable(String tableName){
-		
-	}
+    protected void updateDB(Connection theConn, String theTableName) throws SQLException {
+        Statement statement = theConn.createStatement();
+        try {
+            theConn.setAutoCommit(false);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        String SQL_Query_Text = null;
+        try {
+            FileInputStream file = new FileInputStream(new File("WhatALaunchShouldLookLike.xlsx"));
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            Iterator<Row> rowIterator = sheet.iterator();
+            while (rowIterator.hasNext()) {
+                Row row = rowIterator.next();
+                Iterator<Cell> cellIterator = row.cellIterator();
+                while (cellIterator.hasNext()) {
+                    Cell cell = cellIterator.next();
+                    Cell cell2 = cellIterator.next();
+                    switch (cell.getCellType()) {
+                        case Cell.CELL_TYPE_NUMERIC:
+//                            System.out.print(cell.getNumericCellValue() + "\t");
+//                            System.out.print(cell2.getNumericCellValue() + "\t");
+                            SQL_Query_Text = "INSERT INTO " + theTableName + " (downrangedist, altitude) " + "VALUES(" + cell.getNumericCellValue() + " ," + cell2.getNumericCellValue() + ");";
+                            statement.addBatch(SQL_Query_Text);
+                            int[] count = statement.executeBatch();
+                            theConn.commit();
+                            break;
+                    }
+                }
+//                System.out.println("");
+            }
+            file.close();
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+   } 
 	public void deleteTable(String tableName){
 		
 	}

@@ -22,18 +22,18 @@ public class Display {
     private static final String USERNAME = "root";
     private static final String PASSWORD = "Winston1";
 
-    public Display() {
-        showStuff();
+    public Display(String launchName) {
+        showStuff(launchName);
     }
     
-    private void showStuff() {
+    private void showStuff(String launchName) {
         Connection connection = null;
         Statement statement = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             statement = connection.createStatement();
-            String SQL_Query_Text = "SELECT downrangedist, altitude FROM Launch1";
+            String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + launchName;
             ResultSet rs = statement.executeQuery(SQL_Query_Text);
             while (rs.next()) {
                 int downrangedist = rs.getInt("downrangedist");

@@ -25,6 +25,7 @@ public class Table {
 	public Table(String tableName, Connection connection) throws SQLException{
 		myTableName = tableName;
 		myConnection = connection;
+		createTable(connection, tableName);
 		statement = connection.createStatement();
 		String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + tableName;
 		ResultSet rs = statement.executeQuery(SQL_Query_Text);
@@ -74,12 +75,26 @@ public class Table {
             e.printStackTrace();
         }
    } 
-	public void deleteTable(String tableName){
-		
+	public void deleteTable(Connection conn, String tableName) throws SQLException{
+		  Statement stmt = conn.createStatement();
+	      
+	      String sql = "DROP TABLE " + tableName;
+	 
+	      stmt.executeUpdate(sql);
+	      System.out.println("Table  deleted in given database...");
 	}
 	public String getTableName(){
 		
 		return myTableName;
+	}
+	public void createTable(Connection connection, String tableName) throws SQLException {
+		Statement statement = connection.createStatement();
+		String SQL_Create_Text = "CREATE TABLE " + tableName+"\n(\ndownrangedist int,\naltitude int\n);";
+		System.out.println(SQL_Create_Text);
+		statement.executeUpdate(SQL_Create_Text);
+		//rs.close();
+		statement.close();
+		
 	}
 	
 }

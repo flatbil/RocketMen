@@ -44,11 +44,17 @@ public class Import {
             //Retrieves the list of tables matching the tableName.
             ResultSet res = meta.getTables(null, null, tableName, 
             	     new String[] {"TABLE"});
+            System.out.println("this is res: "+res);
             	//If the table name is found then it creates a new table. 
-            	while(res.next()) {
+            	if(res.next()) {
+            		System.out.println("res has next and this is the table name: " + tableName);
+            		  //add a getTable(String name) method and then update the table.
+            		  myTable.updateDB(connection, tableName);
+            	  } else {
             		  myTable = new Table(tableName, connection);
             		  myTable.updateDB(connection, tableName);
-            	  } 
+            		  //myTable.createTable(connection, tableName);
+            	  }
             //statement = connection.createStatement(); 	handled in table if a new one is made.
             //String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + myTable.getTableName();
             //Also in Table
@@ -72,7 +78,9 @@ public class Import {
         }
         System.out.println("Import Complete");
     }
-    
+    /*
+     * This code moved to the Table class.
+     */
 //    private void updateDB(Connection theConn) throws SQLException {
 //        Statement statement = theConn.createStatement();
 //        try {

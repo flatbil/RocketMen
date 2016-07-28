@@ -87,6 +87,10 @@ public class Table {
 		
 		return myTableName;
 	}
+    public Connection getConnection(){
+    	
+    	return myConnection;
+    }
 	public void createTable(Connection connection, String tableName) throws SQLException {
 		Statement statement = connection.createStatement();
 		String SQL_Create_Text = "CREATE TABLE " + tableName+"\n(\ndownrangedist int,\naltitude int\n);";

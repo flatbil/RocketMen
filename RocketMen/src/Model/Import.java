@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,12 +20,13 @@ import com.mysql.jdbc.DatabaseMetaData;
 public class Import {
     
     private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://localhost/launchdata";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "Winston1";
+    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
+    private static final String USERNAME = "sql3128832";
+    private static final String PASSWORD = "42lZ1vdM6D";
     
     private Table myTable;
     private String myTableName;
+    private ArrayList<Table> myTables;
 
     public Import(String tableName) {
         myTableName = tableName;
@@ -44,16 +46,17 @@ public class Import {
             //Retrieves the list of tables matching the tableName.
             ResultSet res = meta.getTables(null, null, tableName, 
             	     new String[] {"TABLE"});
-            System.out.println("this is res: "+res);
-            	//If the table name is found then it creates a new table. 
+            //If the table name is found then it creates a new table. 
             	if(res.next()) {
-            		System.out.println("res has next and this is the table name: " + tableName);
+            		System.out.println("We already have a " + tableName +"\nTry Again:");
             		  //add a getTable(String name) method and then update the table.
-            		  myTable.updateDB(connection, tableName);
+            		  //myTable.updateDB(connection, tableName);
             	  } else {
             		  myTable = new Table(tableName, connection);
             		  myTable.updateDB(connection, tableName);
+            		  myTables.add(myTable);
             		  //myTable.createTable(connection, tableName);
+            		  System.out.println("Import Complete");
             	  }
             //statement = connection.createStatement(); 	handled in table if a new one is made.
             //String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + myTable.getTableName();
@@ -76,7 +79,10 @@ public class Import {
                 se.printStackTrace();
             }
         }
-        System.out.println("Import Complete");
+        
+    }
+    public ArrayList<Table> getTableList(){
+    	return myTables;
     }
     /*
      * This code moved to the Table class.

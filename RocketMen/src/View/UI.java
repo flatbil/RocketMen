@@ -37,7 +37,6 @@ public class UI {
             	displayMenuGraphically();
             	mainMenu();
             case 4:
-                
             	deleteMenu();
             	mainMenu();
                 break;
@@ -89,18 +88,8 @@ public class UI {
     	Scanner console4 = new Scanner(System.in);
     	System.out.println("Enter the name of the launch to Delete:");
     	String selection = console4.next();
-    	System.out.println("Sorry, Can't Delete your table "+ selection +",\n"
-    			+ " Still working on this :-(");
-    	
-    	while(!myImport.getTableList().isEmpty()){
-    		int i =0;
-    		Table myTable = myImport.getTableList().get(i);
-    		if(myTable.getTableName() == selection){
-    			myTable.deleteTable(myTable.getConnection(), selection);
-    		} else {
-    			i++;
-    		}
-    	}
+    	DBtableDelete del = new DBtableDelete(selection);
+    	System.out.println("Deletion Complete!");
     }
     
 }

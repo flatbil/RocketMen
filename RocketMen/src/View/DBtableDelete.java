@@ -15,47 +15,36 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
-public class DisplayGraphically {
+public class DBtableDelete {
 
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+//    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+//    private static final String DB_URL = "jdbc:mysql://localhost/launchdata";
+//    private static final String USERNAME = "root";
+//    private static final String PASSWORD = "1234";
+
+
+    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
     private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
-    private static final String USERNAME = "sql3128832";
-    private static final String PASSWORD = "42lZ1vdM6D";
 
-    public DisplayGraphically(String launchName) {
-        showStuff(launchName);
+    static final String USERNAME = "sql3128832";
+    static final String PASSWORD = "42lZ1vdM6D";
+    
+
+    
+    public DBtableDelete(String theName) {
+        deleteStuff(theName);
     }
     
-    private void showStuff(String launchName) {
+    private void deleteStuff(String theName) {
         Connection connection = null;
         Statement statement = null;
-        StringBuilder sb = new StringBuilder();
-        sb.append("Tutorial15  ");
-
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             statement = connection.createStatement();
-            String SQL_Query_Text = "SELECT time, downrangedist, altitude FROM " + launchName;
-            ResultSet rs = statement.executeQuery(SQL_Query_Text);
-            while (rs.next()) {
-                int time = rs.getInt("time");
-                int downrangedist = rs.getInt("downrangedist");
-                int altitude = rs.getInt("altitude");
-                sb.append(downrangedist + " " + altitude + " ");
-//                if (time % 10 == 0) {
-//                    sb.append(downrangedist + " " + altitude + " ");
-//                    System.out.print("time: " + time);
-//                    System.out.print(", downrangedist: " + downrangedist);
-//                    System.out.println(", altitude: " + altitude);  
-//                }
-            }
-            rs.close();
+            statement.executeUpdate("DROP TABLE " + theName); // Quick Delete all data on server
             statement.close();
             connection.close();
-            Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(sb.toString());   
-
         } catch(SQLException se) {
             se.printStackTrace();
         } catch(Exception e) {

@@ -32,12 +32,14 @@ public class Display {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             statement = connection.createStatement();
-            String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + launchName;
+            String SQL_Query_Text = "SELECT time, downrangedist, altitude FROM " + launchName;
             ResultSet rs = statement.executeQuery(SQL_Query_Text);
             while (rs.next()) {
+                int time = rs.getInt("time");
                 int downrangedist = rs.getInt("downrangedist");
                 int altitude = rs.getInt("altitude");
-                System.out.print("downrangedist: " + downrangedist);
+                System.out.print("time: " + time);
+                System.out.print(", downrangedist: " + downrangedist);
                 System.out.println(", altitude: " + altitude);  
             }
             rs.close();

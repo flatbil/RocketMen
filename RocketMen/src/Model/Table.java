@@ -27,7 +27,7 @@ public class Table {
 		myConnection = connection;
 		createTable(connection, tableName);
 		statement = connection.createStatement();
-		String SQL_Query_Text = "SELECT downrangedist, altitude FROM " + tableName;
+		String SQL_Query_Text = "SELECT time, downrangedist, altitude FROM " + tableName;
 		ResultSet rs = statement.executeQuery(SQL_Query_Text);
 		rs.close();
 		statement.close();
@@ -46,7 +46,7 @@ public class Table {
         }
         String SQL_Query_Text = null;
         try {
-            FileInputStream file = new FileInputStream(new File("WhatALaunchShouldLookLike.xlsx"));
+            FileInputStream file = new FileInputStream(new File("Orbcomm2.xlsx"));
             XSSFWorkbook workbook = new XSSFWorkbook(file);
             XSSFSheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();
@@ -55,12 +55,13 @@ public class Table {
                 Iterator<Cell> cellIterator = row.cellIterator();
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
+                    Cell cell3 = cellIterator.next();
                     Cell cell2 = cellIterator.next();
                     switch (cell.getCellType()) {
                         case Cell.CELL_TYPE_NUMERIC:
 //                            System.out.print(cell.getNumericCellValue() + "\t");
 //                            System.out.print(cell2.getNumericCellValue() + "\t");
-                            SQL_Query_Text = "INSERT INTO " + theTableName + " (downrangedist, altitude) " + "VALUES(" + cell.getNumericCellValue() + " ," + cell2.getNumericCellValue() + ");";
+                            SQL_Query_Text = "INSERT INTO " + theTableName + " (time, downrangedist, altitude) " + "VALUES(" + cell.getNumericCellValue() + " ," + cell2.getNumericCellValue()+ " ," + cell3.getNumericCellValue() + ");";
                             statement.addBatch(SQL_Query_Text);
                             int[] count = statement.executeBatch();
                             theConn.commit();
@@ -75,25 +76,19 @@ public class Table {
             e.printStackTrace();
         }
    } 
-	public void deleteTable(Connection conn, String tableName) throws SQLException{
-		  Statement stmt = conn.createStatement();
-	      
-	      String sql = "DROP TABLE " + tableName;
-	 
-	      stmt.executeUpdate(sql);
-	      System.out.println("Table  deleted in given database...");
-	}
+	
 	public String getTableName(){
 		
 		return myTableName;
 	}
+	
     public Connection getConnection(){
     	
     	return myConnection;
     }
 	public void createTable(Connection connection, String tableName) throws SQLException {
 		Statement statement = connection.createStatement();
-		String SQL_Create_Text = "CREATE TABLE " + tableName+"\n(\ndownrangedist int,\naltitude int\n);";
+		String SQL_Create_Text = "CREATE TABLE " + tableName+"\n(\ntime int,\ndownrangedist int,\naltitude int\n);";
 		System.out.println(SQL_Create_Text);
 		statement.executeUpdate(SQL_Create_Text);
 		//rs.close();

@@ -49,12 +49,12 @@ public class Import {
             //If the table name is found then it creates a new table. 
             	if(res.next()) {
             		System.out.println("We already have a " + tableName +"\nTry Again:");
+            		
             		  //add a getTable(String name) method and then update the table.
             		  //myTable.updateDB(connection, tableName);
             	  } else {
             		  myTable = new Table(tableName, connection);
             		  myTable.updateDB(connection, tableName);
-            		  myTables.add(myTable);
             		  //myTable.createTable(connection, tableName);
             		  System.out.println("Import Complete");
             	  }

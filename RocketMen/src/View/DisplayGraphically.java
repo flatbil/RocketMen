@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -42,6 +43,7 @@ public class DisplayGraphically {
                 int time = rs.getInt("time");
                 int downrangedist = rs.getInt("downrangedist");
                 int altitude = rs.getInt("altitude");
+                //TimeUnit.SECONDS.sleep(time);
                 sb.append(downrangedist + " " + altitude + " ");
 //                if (time % 10 == 0) {
 //                    sb.append(downrangedist + " " + altitude + " ");

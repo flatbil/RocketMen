@@ -80,7 +80,7 @@ public class UI {
     	int selection = 0;
     	if(console3.hasNextInt()){
     		selection = console3.nextInt();
-    		if(selection < i){
+    		if(selection <= i && selection >= 0){
     		  Display theDisplay = new Display(selectOption(selection));
     		} else { 
     			System.out.println("That wasn't one of the numbers I gave you...\n");
@@ -103,14 +103,14 @@ public class UI {
     	int selection = 0;
     	if(console3.hasNextInt()){
     		selection = console3.nextInt();
-    		if(selection < i){
+    		if(selection <= i && selection >= 0){
     		DisplayGraphically theDisplay = new DisplayGraphically(selectOption(selection));
     		} else {
     			System.out.println("That wasn't one of the numbers I gave you...\n");
     			displayMenuGraphically();
     		}
     	} else {
-    		System.out.println("You have to type a number in the range shown:");
+    		System.out.println("You have to type a number in the range shown:\n");
     		displayMenuGraphically();
     	}
     }
@@ -123,7 +123,7 @@ public class UI {
     	int i = printOptions();
     	if(console4.hasNextInt()){
     		int selection = console4.nextInt();
-    		if(selection < i){
+    		if(selection <= i && selection >= 0){
     		DBtableDelete del = new DBtableDelete(selectOption(selection));
     		} else {
     			System.out.println("That wasn't one of the numbers I gave you...\n");
@@ -145,10 +145,10 @@ public class UI {
     	DatabaseMetaData meta = (DatabaseMetaData) myConnection.getMetaData();
     	ResultSet res = meta.getTables(null, null, null, 
        	     new String[] {"TABLE"});
-    	int i = 1;
+    	int i = 0;
     	
     	while(res.next()){
-    		System.out.println(i + ". \t" + res.getString(3));
+    		System.out.println(i+1 + ". \t" + res.getString(3));
     		i++;
     	}
     	res.close();

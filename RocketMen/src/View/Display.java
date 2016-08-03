@@ -36,8 +36,8 @@ public class Display {
             ResultSet rs = statement.executeQuery(SQL_Query_Text);
             while (rs.next()) {
                 int time = rs.getInt("time");
-                int downrangedist = rs.getInt("downrangedist");
-                int altitude = rs.getInt("altitude");
+                double downrangedist = rs.getDouble("downrangedist");
+                double altitude = rs.getDouble("altitude");
                 System.out.print("time: " + time);
                 System.out.print(", downrangedist: " + downrangedist);
                 System.out.println(", altitude: " + altitude);  

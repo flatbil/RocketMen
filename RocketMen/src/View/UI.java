@@ -1,15 +1,23 @@
 package View;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.mysql.jdbc.DatabaseMetaData;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
 
 import Model.Import;
 import Model.Table;
 
 public class UI {
 	private Import myImport;
-    public UI() throws SQLException {
-        mainMenu();
+	private Connection myConnection;
+    public UI(Connection connection) throws SQLException {
+        myConnection = connection;
+    	mainMenu();
     }
     
     public void mainMenu() throws SQLException {
@@ -65,31 +73,99 @@ public class UI {
     /*
      *@author William Almond 
      */
-    private void displayMenu(){
+    private void displayMenu() throws SQLException{
     	Scanner console3 = new Scanner(System.in);
-    	System.out.println("Enter the name of the launch:");
-    	String selection = console3.next();
-    	Display theDisplay = new Display(selection);
+    	System.out.println("Enter the number of the launch:");
+    	int i = printOptions();
+    	int selection = 0;
+    	if(console3.hasNextInt()){
+    		selection = console3.nextInt();
+    		if(selection < i){
+    		  Display theDisplay = new Display(selectOption(selection));
+    		} else { 
+    			System.out.println("That wasn't one of the numbers I gave you...\n");
+    			displayMenu();
+    		}
+    	} else {
+    		System.out.println("You have to type a number:");
+    		displayMenu();
+    	}
+    	
     }
     
     /*
      *@author William Almond 
      */
-    private void displayMenuGraphically(){
+    private void displayMenuGraphically() throws SQLException{
     	Scanner console3 = new Scanner(System.in);
-    	System.out.println("Enter the name of the launch:");
-    	String selection = console3.next();
-    	DisplayGraphically gd = new DisplayGraphically(selection);
+    	System.out.println("Enter the number of the launch:");
+    	int i = printOptions();
+    	int selection = 0;
+    	if(console3.hasNextInt()){
+    		selection = console3.nextInt();
+    		if(selection < i){
+    		DisplayGraphically theDisplay = new DisplayGraphically(selectOption(selection));
+    		} else {
+    			System.out.println("That wasn't one of the numbers I gave you...\n");
+    			displayMenuGraphically();
+    		}
+    	} else {
+    		System.out.println("You have to type a number in the range shown:");
+    		displayMenuGraphically();
+    	}
     }
     /*
      * @author William Almond
      */
     private void deleteMenu() throws SQLException{
     	Scanner console4 = new Scanner(System.in);
-    	System.out.println("Enter the name of the launch to Delete:");
-    	String selection = console4.next();
-    	DBtableDelete del = new DBtableDelete(selection);
-    	System.out.println("Deletion Complete!");
+    	System.out.println("Enter the number of the Table to be deleted:");
+    	int i = printOptions();
+    	if(console4.hasNextInt()){
+    		int selection = console4.nextInt();
+    		if(selection < i){
+    		DBtableDelete del = new DBtableDelete(selectOption(selection));
+    		} else {
+    			System.out.println("That wasn't one of the numbers I gave you...\n");
+    			deleteMenu();
+    		}
+    		System.out.println("Deletion Complete!");
+    	} else {
+    		System.out.println("You must type a number in the range shown:");
+    		deleteMenu();
+    	}
+    	
+    }
+    /*
+     * @author William Almond
+     * Method prints all the options to the menu screen for the user to select.
+     * returns an integer that is the number of tables.
+     */
+    private int printOptions() throws SQLException{
+    	DatabaseMetaData meta = (DatabaseMetaData) myConnection.getMetaData();
+    	ResultSet res = meta.getTables(null, null, null, 
+       	     new String[] {"TABLE"});
+    	int i = 1;
+    	
+    	while(res.next()){
+    		System.out.println(i + ". \t" + res.getString(3));
+    		i++;
+    	}
+    	res.close();
+    	return i;
+    }
+    private String selectOption(int i) throws SQLException{
+    	DatabaseMetaData meta = (DatabaseMetaData) myConnection.getMetaData();
+    	ResultSet res = meta.getTables(null, null, null, 
+       	     new String[] {"TABLE"});
+    	ArrayList<String> theList = new ArrayList<String>();
+    	String theIndex;
+    	while(res.next()){
+    		theList.add(res.getString(3));
+    	}
+    	theIndex = theList.get(i-1);
+    	res.close();
+    	return theIndex;
     }
     
 }

@@ -6,7 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Scanner;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -36,6 +38,28 @@ public class Table {
 		
 		return null;
 	}
+	
+    private String getFile() {
+        HashMap hm = new HashMap();
+        int j = 1;
+        System.out.println("\nHere are a list of files to choose from:");
+        Scanner console = new Scanner(System.in);
+        String filename = "";
+        File rootFiles = new File("./");
+        File[] fileList = rootFiles.listFiles();
+        for (int i = 0; i < fileList.length; i++) {
+            if (fileList[i].isFile() && fileList[i].toString().substring(fileList[i].toString().length() -1 ).equals("x")) {
+                System.out.println(j + ". " + fileList[i].getName());
+                //System.out.println("\t" + fileList[i].getName());
+                hm.put(j, fileList[i].getName());
+                j++;
+            } 
+        }
+        System.out.print("\nEnter the number for the file you want to import data from> ");
+        filename = (String) (hm.get(console.nextInt()));
+        return filename;
+    }
+	
     protected void updateDB(Connection theConn, String theTableName) throws SQLException {
         Statement statement = theConn.createStatement();
         try {
@@ -46,7 +70,9 @@ public class Table {
         }
         String SQL_Query_Text = null;
         try {
-            FileInputStream file = new FileInputStream(new File("Orbcomm2.xlsx"));
+        	String filename = getFile();
+            FileInputStream file = new FileInputStream(new File(filename));//"Orbcomm2.xlsx"));
+            //FileInputStream file = new FileInputStream(new File("Orbcomm2.xlsx"));
             XSSFWorkbook workbook = new XSSFWorkbook(file);
             XSSFSheet sheet = workbook.getSheetAt(0);
             Iterator<Row> rowIterator = sheet.iterator();

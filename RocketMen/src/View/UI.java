@@ -58,16 +58,20 @@ public class UI {
      * @author William Almond
      * 
      */
-    private void importMenu(){
+    private void importMenu() throws SQLException{
     	Scanner console2 = new Scanner(System.in);
-    	System.out.println("Enter the name of the table:");
+    	System.out.println("Enter the name of the table for import:");
     	//String selection = console2.next();
 //    	if(console2.next() == "0"){
 //    		mainMenu();
 //    	}
 //    	else {
     		String selection = console2.next();
-    		myImport = new Import(selection);
+    		if(selection.equals("0")){
+    			return;
+    		} else {
+    			myImport = new Import(selection);
+    		}
 //    	}
     }
     /*
@@ -75,14 +79,16 @@ public class UI {
      */
     private void displayMenu() throws SQLException{
     	Scanner console3 = new Scanner(System.in);
-    	System.out.println("Enter the number of the launch:");
+    	System.out.println("Enter the number of the launch for display:");
     	int i = printOptions();
     	int selection = 0;
     	if(console3.hasNextInt()){
     		selection = console3.nextInt();
-    		if(selection <= i && selection >= 0){
+    		if(selection <= i && selection >= 1){
     		  Display theDisplay = new Display(selectOption(selection));
-    		} else { 
+    		} else if(selection == 0){ 
+        		return;
+        		}else { 
     			System.out.println("That wasn't one of the numbers I gave you...\n");
     			displayMenu();
     		}
@@ -98,14 +104,16 @@ public class UI {
      */
     private void displayMenuGraphically() throws SQLException{
     	Scanner console3 = new Scanner(System.in);
-    	System.out.println("Enter the number of the launch:");
+    	System.out.println("Enter the number of the launch for graphical display:");
     	int i = printOptions();
     	int selection = 0;
     	if(console3.hasNextInt()){
     		selection = console3.nextInt();
-    		if(selection <= i && selection >= 0){
+    		if(selection <= i && selection >= 1){
     		DisplayGraphically theDisplay = new DisplayGraphically(selectOption(selection));
-    		} else {
+    		} else if(selection == 0){ 
+        		return;
+        		}else {
     			System.out.println("That wasn't one of the numbers I gave you...\n");
     			displayMenuGraphically();
     		}
@@ -123,9 +131,11 @@ public class UI {
     	int i = printOptions();
     	if(console4.hasNextInt()){
     		int selection = console4.nextInt();
-    		if(selection <= i && selection >= 0){
+    		if(selection <= i && selection >= 1){
     		DBtableDelete del = new DBtableDelete(selectOption(selection));
-    		} else {
+    		} else if(selection == 0){ 
+    			return;
+    		}else{
     			System.out.println("That wasn't one of the numbers I gave you...\n");
     			deleteMenu();
     		}

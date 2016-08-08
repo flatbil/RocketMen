@@ -17,13 +17,14 @@ public class UI {
 	private Connection myConnection;
     public UI(Connection connection) throws SQLException {
         myConnection = connection;
-    	mainMenu();
+    	splashScreen();
     }
     
-    public void mainMenu() throws SQLException {
+    public void adminMenu() throws SQLException {
         int selection = 0;
         Scanner console = new Scanner(System.in);
         System.out.println("Welcome to RocketMaster 3000. \nWhat would you like to do?");
+        System.out.println("Signed in as: Guest");
         System.out.println("1. Import Data");
         System.out.println("2. Show Rocket launch Data");
         System.out.println("3. Show Rocket launch Data Graphically!");
@@ -34,19 +35,19 @@ public class UI {
         switch (selection) {
             case 1:
                 importMenu();
-                mainMenu();
+                adminMenu();
                 break;    
             case 2:
                 //Display d = new Display();
             	displayMenu();
-                mainMenu();
+                adminMenu();
                 break;
             case 3:
             	displayMenuGraphically();
-            	mainMenu();
+            	adminMenu();
             case 4:
             	deleteMenu();
-            	mainMenu();
+            	adminMenu();
                 break;
             case 5:
                 System.out.println("Thanks for using RocketMaster 3000");
@@ -54,6 +55,74 @@ public class UI {
         }
         
     }
+    
+    public void splashScreen() throws SQLException {
+        int selection = 0;
+        Scanner console = new Scanner(System.in);
+        System.out.println("Welcome to RocketMaster 3000. \nWhat would you like to do?");
+        System.out.println("1. Sign in.");
+        System.out.println("2. Sign up for a user account.");
+        System.out.println("3. Sign in as a guest");
+        System.out.println("4. Exit");
+        System.out.print("> ");
+        selection = console.nextInt();
+        switch (selection) {
+            case 1:
+                logIn();
+                break;    
+            case 2:
+                break;
+            case 3:
+                guestMenu();
+                break;
+            case 4:
+                break;
+        }
+    }
+
+    public void logIn() throws SQLException {
+        int selection = 0;
+        Scanner console = new Scanner(System.in);
+        System.out.println("Welcome to RocketMaster 3000. \nWhat would you like to do?");
+        System.out.print("Enter your username: ");
+        String username = console.next();
+        System.out.print("Enter your password: ");
+        String password = console.next();
+        if(username.equals("admin") && password.equals("admin")) {
+            adminMenu();
+        } else {
+            //handle user login
+        }        
+    }
+
+    
+    public void guestMenu() throws SQLException {
+        int selection = 0;
+        Scanner console = new Scanner(System.in);
+        System.out.println("Welcome to RocketMaster 3000. \nWhat would you like to do?");
+        System.out.println("Signed in as: Guest");
+        System.out.println("1. Show Rocket launch Data");
+        System.out.println("2. Show Rocket launch Data Graphically!");
+        System.out.println("3. Exit");
+        System.out.print("> ");
+        selection = console.nextInt();
+        switch (selection) {
+            case 1:
+                //Display d = new Display();
+                displayMenu();
+                guestMenu();
+                break;
+            case 2:
+                displayMenuGraphically();
+                guestMenu();
+            case 3:
+                System.out.println("Thanks for using RocketMaster 3000");
+                break;
+        }
+        
+    }
+    
+    
     /*
      * @author William Almond
      * 

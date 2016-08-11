@@ -18,24 +18,25 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class DisplayGraphically {
 
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
-    private static final String USERNAME = "sql3128832";
-    private static final String PASSWORD = "42lZ1vdM6D";
+//    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+//    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
+//    private static final String USERNAME = "sql3128832";
+//    private static final String PASSWORD = "42lZ1vdM6D";
 
-    public DisplayGraphically(String launchName) {
-        showStuff(launchName);
+    public DisplayGraphically(String launchName, Connection theConnection) {
+        showStuff(launchName, theConnection);
     }
     
-    private void showStuff(String launchName) {
-        Connection connection = null;
+    private void showStuff(String launchName, Connection theConnection) {
+        Connection connection = theConnection;
         Statement statement = null;
         StringBuilder sb = new StringBuilder();
         sb.append("Tutorial15  ");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            //Connection made in Main
+//            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             statement = connection.createStatement();
             String SQL_Query_Text = "SELECT time, downrangedist, altitude FROM " + launchName;
             ResultSet rs = statement.executeQuery(SQL_Query_Text);
@@ -54,7 +55,7 @@ public class DisplayGraphically {
             }
             rs.close();
             statement.close();
-            connection.close();
+//            connection.close();
             Runtime rt = Runtime.getRuntime();
             Process pr = rt.exec(sb.toString());   
 
@@ -69,13 +70,13 @@ public class DisplayGraphically {
                 }
             } catch(SQLException se2) {
             }
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch(SQLException se) {
-                se.printStackTrace();
-            }
+//            try {
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch(SQLException se) {
+//                se.printStackTrace();
+//            }
         }
     }
     

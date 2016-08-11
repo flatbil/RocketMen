@@ -17,20 +17,20 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class Display {
 
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
-    private static final String USERNAME = "sql3128832";
-    private static final String PASSWORD = "42lZ1vdM6D";
-    public Display(String launchName) {
-        showStuff(launchName);
+//    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+//    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
+//    private static final String USERNAME = "sql3128832";
+//    private static final String PASSWORD = "42lZ1vdM6D";
+    public Display(String launchName, Connection theConnection) {
+        showStuff(launchName, theConnection);
     }
     
-    private void showStuff(String launchName) {
-        Connection connection = null;
+    private void showStuff(String launchName, Connection theConnection) {
+        Connection connection = theConnection;
         Statement statement = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+//            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             statement = connection.createStatement();
             String SQL_Query_Text = "SELECT time, downrangedist, altitude FROM " + launchName;
             ResultSet rs = statement.executeQuery(SQL_Query_Text);
@@ -44,7 +44,7 @@ public class Display {
             }
             rs.close();
             statement.close();
-            connection.close();
+            //connection.close();
         } catch(SQLException se) {
             se.printStackTrace();
         } catch(Exception e) {
@@ -56,13 +56,13 @@ public class Display {
                 }
             } catch(SQLException se2) {
             }
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch(SQLException se) {
-                se.printStackTrace();
-            }
+//            try {
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch(SQLException se) {
+//                se.printStackTrace();
+//            }
         }
     }
     

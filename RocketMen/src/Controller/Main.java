@@ -32,11 +32,9 @@ public class Main {
 			connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 			UI u = new UI(connection);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch bloc
 			e.printStackTrace();
 		}
-    	
-    	
     	
     	connection.close();
     }//end main

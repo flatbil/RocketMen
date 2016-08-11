@@ -11,15 +11,24 @@ import java.sql.ResultSet;
 
 import Model.Import;
 import Model.Table;
-
+import Model.User;
+/**
+ * UI Class that contains the menus for the user to interact.
+ */
 public class UI {
-	private Import myImport;
 	private Connection myConnection;
-    public UI(Connection connection) throws SQLException {
+    /**
+     * Constructor for the UI class.
+     */
+	public UI(Connection connection) throws SQLException {
         myConnection = connection;
     	splashScreen();
     }
-    
+    /**
+     * @author Carl Huntington
+     * The menu that is accessible only by the administrator with full permissions.
+     * @throws SQLException
+     */
     public void adminMenu() throws SQLException {
         int selection = 0;
         Scanner console = new Scanner(System.in);
@@ -55,7 +64,11 @@ public class UI {
         }
         
     }
-    
+    /**
+     * @author Carl Huntington
+     * Splash screen that is accessible to all users.
+     * @throws SQLException
+     */
     public void splashScreen() throws SQLException {
         int selection = 0;
         Scanner console = new Scanner(System.in);
@@ -71,6 +84,7 @@ public class UI {
                 logIn();
                 break;    
             case 2:
+            	logIn();
                 break;
             case 3:
                 guestMenu();
@@ -79,9 +93,12 @@ public class UI {
                 break;
         }
     }
-
+    /**
+     * @author Carl Huntington
+     * LogIn menu that is displayed when you log in.
+     * @throws SQLException
+     */
     public void logIn() throws SQLException {
-        int selection = 0;
         Scanner console = new Scanner(System.in);
         System.out.println("Welcome to RocketMaster 3000. \nWhat would you like to do?");
         System.out.print("Enter your username: ");
@@ -91,11 +108,15 @@ public class UI {
         if(username.equals("admin") && password.equals("admin")) {
             adminMenu();
         } else {
-            //handle user login
+        	new User(username, password, myConnection);
+        	adminMenu();
         }        
     }
 
-    
+    /**
+     * @author Carl Huntington
+     * @throws SQLException
+     */
     public void guestMenu() throws SQLException {
         int selection = 0;
         Scanner console = new Scanner(System.in);
@@ -123,9 +144,11 @@ public class UI {
     }
     
     
-    /*
+    /**
      * @author William Almond
-     * 
+     * This menu asks the user to enter the name of the table to import.
+     * As long as the name isn't '0' then it will send the name and connection
+     * to the Import class.
      */
     private void importMenu() throws SQLException{
     	Scanner console2 = new Scanner(System.in);
@@ -139,11 +162,11 @@ public class UI {
     		if(selection.equals("0")){
     			return;
     		} else {
-    			myImport = new Import(selection);
+    			new Import(selection, myConnection);
     		}
 //    	}
     }
-    /*
+    /**
      *@author William Almond 
      */
     private void displayMenu() throws SQLException{
@@ -154,7 +177,7 @@ public class UI {
     	if(console3.hasNextInt()){
     		selection = console3.nextInt();
     		if(selection <= i && selection >= 1){
-    		  Display theDisplay = new Display(selectOption(selection));
+    		  new Display(selectOption(selection), myConnection);
     		} else if(selection == 0){ 
         		return;
         		}else { 
@@ -168,8 +191,8 @@ public class UI {
     	
     }
     
-    /*
-     *@author William Almond 
+    /**
+     *@author Carl Huntington
      */
     private void displayMenuGraphically() throws SQLException{
     	Scanner console3 = new Scanner(System.in);
@@ -179,7 +202,7 @@ public class UI {
     	if(console3.hasNextInt()){
     		selection = console3.nextInt();
     		if(selection <= i && selection >= 1){
-    		DisplayGraphically theDisplay = new DisplayGraphically(selectOption(selection));
+    		new DisplayGraphically(selectOption(selection), myConnection);
     		} else if(selection == 0){ 
         		return;
         		}else {
@@ -191,8 +214,9 @@ public class UI {
     		displayMenuGraphically();
     	}
     }
-    /*
+    /**
      * @author William Almond
+     * This menu gives SQL command to delete a table from the Database.
      */
     private void deleteMenu() throws SQLException{
     	Scanner console4 = new Scanner(System.in);
@@ -201,7 +225,7 @@ public class UI {
     	if(console4.hasNextInt()){
     		int selection = console4.nextInt();
     		if(selection <= i && selection >= 1){
-    		DBtableDelete del = new DBtableDelete(selectOption(selection));
+    		new DBtableDelete(selectOption(selection), myConnection);
     		} else if(selection == 0){ 
     			return;
     		}else{
@@ -215,7 +239,7 @@ public class UI {
     	}
     	
     }
-    /*
+    /**
      * @author William Almond
      * Method prints all the options to the menu screen for the user to select.
      * returns an integer that is the number of tables.

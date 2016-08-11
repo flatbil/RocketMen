@@ -1,45 +1,33 @@
 package Model;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import com.mysql.jdbc.DatabaseMetaData;
 
 public class Import {
     
-    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
-    private static final String USERNAME = "sql3128832";
-    private static final String PASSWORD = "42lZ1vdM6D";
+//    private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+//    private static final String DB_URL = "jdbc:mysql://sql3.freesqldatabase.com:3306/sql3128832";
+//    private static final String USERNAME = "sql3128832";
+//    private static final String PASSWORD = "42lZ1vdM6D";
     
     private Table myTable;
-    private String myTableName;
     private ArrayList<Table> myTables;
 
-    public Import(String tableName) {
-        myTableName = tableName;
-    	importer(tableName);
+    public Import(String tableName, Connection theConnection) {
+        importer(tableName, theConnection);
     }
     
-    private void importer(String tableName) {
-        Connection connection = null;
+    private void importer(String tableName, Connection theConnection) {
+        Connection connection = theConnection;
         //Statement statement = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             System.out.println("Connecting to DB");
-            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            //This connection is made in Main.
+//            connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             System.out.println("creating a SQL statement");
             //Accesses the meta data for the database.
             DatabaseMetaData meta = (DatabaseMetaData) connection.getMetaData();
@@ -63,22 +51,23 @@ public class Import {
             //Also in Table
             
             //ResultSet rs = statement.executeQuery(SQL_Query_Text);
-            //rs.close();
+            res.close();
             //statement.close();
-            connection.close();
+//            connection.close();
         } catch(SQLException se) {
             se.printStackTrace();
         } catch(Exception e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (connection != null) {
-                    connection.close();
-                }
-            } catch(SQLException se) {
-                se.printStackTrace();
-            }
-        }
+        } 
+//        finally {
+//            try {
+//                if (connection != null) {
+//                    connection.close();
+//                }
+//            } catch(SQLException se) {
+//                se.printStackTrace();
+//            }
+//        }
         
     }
     public ArrayList<Table> getTableList(){
